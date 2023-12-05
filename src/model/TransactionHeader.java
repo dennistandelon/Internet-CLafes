@@ -1,22 +1,75 @@
 package model;
 
 import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.Vector;
+
+import util.Database;
 
 public class TransactionHeader {
 
 	private int TransactionID;
-	private int PC_ID;
-	private String CustomerName;
-	private Date BookedTime;
+	private int StaffID;
+	private String StaffName;
+	private Date TransactionDate;
 	
-	public TransactionHeader(int transactionID, int pC_ID, String customerName, Date bookedTime) {
+	private static Database db = Database.getConnection();
+	
+	public TransactionHeader(int transactionID, int staffID, String staffName, Date transactionDate) {
 		super();
 		TransactionID = transactionID;
-		PC_ID = pC_ID;
-		CustomerName = customerName;
-		BookedTime = bookedTime;
+		StaffID = staffID;
+		StaffName = staffName;
+		TransactionDate = transactionDate;
 	}
 
+	public static Vector<TransactionHeader> GetAllTransactionHeaderData() {
+		Vector<TransactionHeader> thList = new Vector<TransactionHeader>();
+		
+		String query = "SELECT * FROM transactionheader";
+		
+		try {
+			ResultSet rs = db.executeQuery(query);
+			
+			while(rs.next()) {
+				int transactionID = rs.getInt("TransactionID");
+				int staffID = rs.getInt("StaffID");
+				String staffName = rs.getString("StaffName");
+				Date transactionDate = rs.getDate("TransactionDate");
+				
+				thList.add(new TransactionHeader(transactionID, staffID, staffName, transactionDate));
+			}
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		
+		return thList;
+	}
+	
+	public static boolean AddNewTransactionHeader(int id, int StaffID, Date TransactionDate) {
+		
+		String query = "INSERT INTO transactionheader"
+				+ " VALUES(?,?,?,?)";
+		
+		try {
+			PreparedStatement ps = db.prepareStatement(query);
+			ps.setInt(1, id);
+			ps.setInt(2, StaffID);
+			ps.setString(3, User.searchName(StaffID));
+			ps.setDate(4, TransactionDate);
+			
+			ps.execute();
+			
+		} catch (Exception e) {
+			return false;
+		}
+		
+		return true;
+	}
+	
+	// Getter & Setter
 	public int getTransactionID() {
 		return TransactionID;
 	}
@@ -25,29 +78,28 @@ public class TransactionHeader {
 		TransactionID = transactionID;
 	}
 
-	public int getPC_ID() {
-		return PC_ID;
+	public int getStaffID() {
+		return StaffID;
 	}
 
-	public void setPC_ID(int pC_ID) {
-		PC_ID = pC_ID;
+	public void setStaffID(int staffID) {
+		StaffID = staffID;
 	}
 
-	public String getCustomerName() {
-		return CustomerName;
+	public String getStaffName() {
+		return StaffName;
 	}
 
-	public void setCustomerName(String customerName) {
-		CustomerName = customerName;
+	public void setStaffName(String staffName) {
+		StaffName = staffName;
 	}
 
-	public Date getBookedTime() {
-		return BookedTime;
+	public Date getTransactionDate() {
+		return TransactionDate;
 	}
 
-	public void setBookedTime(Date bookedTime) {
-		BookedTime = bookedTime;
+	public void setTransactionDate(Date transactionDate) {
+		TransactionDate = transactionDate;
 	}
-
-	
+		
 }

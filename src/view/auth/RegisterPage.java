@@ -1,7 +1,6 @@
 package view.auth;
 
 import controller.UserController;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -65,7 +64,7 @@ public class RegisterPage extends Page{
 		bp.setCenter(gp);
 		bp.setBottom(error_lbl);
 		
-		this.scene = new Scene(bp,500,500);
+		this.scene.setRoot(bp);
 	}
 
 	@Override

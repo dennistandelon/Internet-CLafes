@@ -1,5 +1,6 @@
 package view.pages;
 
+import model.User;
 import view.Page;
 
 public class ViewPCBooked extends Page {

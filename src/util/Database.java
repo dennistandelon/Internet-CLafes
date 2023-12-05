@@ -13,15 +13,12 @@ public final class Database {
 	/*
 	 * Database Configuration Variables
 	 * 
-	 * Replace with your Own Database Configuration,
+	 * Replace with your Own Database Configuration check in the Environment Class,
 	 * This application using default MySQL Server Configuration
 	 * */
-	private final String USERNAME = "root"; 
-	private final String PASSWORD = ""; 
-	private final String HOST = "localhost"; 
-	private final String PORT = "3306"; 
-	private final String DATABASE = "warnetdb";
-	private final String CONNECTION = String.format("jdbc:mysql://%s:%s/%s", HOST, PORT, DATABASE);
+	private final String USERNAME = Environment.USERNAME; 
+	private final String PASSWORD = Environment.PASSWORD; 
+	private final String CONNECTION = Environment.CONNECTION;
 	
 	private Connection connect; // Database Connection Instance
 	private Statement statement; // SQL Query Statement Instance
@@ -85,9 +82,8 @@ public final class Database {
 	
 	
 	/*
-	 * This method used to execute SQL Statement using prepared statement
+	 * This method used to execute parameterized SQL Statement
 	 * Gain: Avoid SQL Injection on query
-	 * Loss: Slower execution time than normal executeQuery
 	 * */
 	public PreparedStatement prepareStatement(String Query) {
 		PreparedStatement ps = null;

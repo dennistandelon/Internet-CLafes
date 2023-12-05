@@ -5,10 +5,6 @@ import java.util.Vector;
 import model.User;
 
 public class UserController {
-
-	public static Vector<User> GetAllUserData(){
-		return User.GetAllUserData();
-	}
 	
 	public static User GetUserData(String Username, String Password) {
 		return User.GetUserData(Username, Password);
@@ -59,11 +55,25 @@ public class UserController {
 		return "Error data";
 	}
 	
-	public static String ChangeUserRole(String UserID, String NewRole) {
-		String message = "";
+	public static String ChangeUserRole(int UserID, String NewRole) {
 		
+		if(!NewRole.equals("Admin") && !NewRole.equals("Customer") && !NewRole.equals("Operator") && !NewRole.equals("Computer Technician")) {
+			return "Role Must be selected";
+		}
 		
-		return message;
+		if(!User.ChangeUserRole(UserID, NewRole)) {
+			return "Failed to change new Role";
+		}
+		
+		return "Success";
+	}
+	
+	public static Vector<User> GetAllTechnician(){
+		return User.GetAllTechnician();
+	}
+	
+	public static Vector<User> GetAllUserData(){
+		return User.GetAllUserData();
 	}
 	
 	/* -- Additional Method --

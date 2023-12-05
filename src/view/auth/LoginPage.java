@@ -1,7 +1,6 @@
 package view.auth;
 
 import controller.UserController;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -54,7 +53,7 @@ public class LoginPage extends Page {
 		bp.setCenter(gp);
 		bp.setBottom(error_lbl);
 		
-		this.scene = new Scene(bp,500,500);
+		this.scene.setRoot(bp);
 	}
 
 	@Override
@@ -78,7 +77,7 @@ public class LoginPage extends Page {
 			
 			if(error_lbl.getText().equals("success")) {
 				ViewAllPC home = new ViewAllPC();
-				home.setNavbar(UserController.GetUserData(username, password));
+				home.setUser(UserController.GetUserData(username, password));
 				StageManager.getInstance().setPage((Page)home);
 			}
 		});

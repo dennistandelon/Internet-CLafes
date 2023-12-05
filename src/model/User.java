@@ -14,7 +14,6 @@ public class User {
 	private String UserAge;
 	private String UserRole;
 	
-	//Additional Attribute for Database call
 	private static Database db = Database.getConnection();
 	
 	public User(int userID, String userName, String userPassword, String userAge, String userRole) {
@@ -25,8 +24,9 @@ public class User {
 		UserAge = userAge;
 		UserRole = userRole;
 	}
-
+	
 	public static Vector<User> GetAllUserData(){
+		
 		Vector<User> userList = new Vector<User>();
 		
 		String Query = "SELECT * FROM user";
@@ -58,7 +58,7 @@ public class User {
 			ps.setString(1, Username);
 			ResultSet rs = ps.executeQuery();
 			
-			while(rs.next()) {
+			if(rs.next()) {
 
 				int userID = rs.getInt("UserID");
 				String userName = rs.getString("UserName");
@@ -78,20 +78,89 @@ public class User {
 	public static boolean AddNewUser(String Username, String Password, Integer Age) {
 		
 		String query = "INSERT INTO user (UserName,UserPassword,UserAge,UserRole)"
-				+ " VALUES('" + Username + "','" + Password + "'," + Age + ",'Customer')";
+				+ " VALUES(?,?,?,'Customer')";
 		
 		try {
-			db.executeUpdate(query);
+			PreparedStatement ps = db.prepareStatement(query);
+			ps.setString(1, Username);
+			ps.setString(2, Password);
+			ps.setInt(3, Age);
+			
+			ps.execute();
+			
 		} catch (Exception e) {
 			return false;
 		}
 		
 		return true;
 	}
+	
+	public static boolean ChangeUserRole(int UserID, String NewRole) {
+		
+		String query = "UPDATE user SET UserRole= ? WHERE UserID = ?";
+		
+		try {
+			PreparedStatement ps = db.prepareStatement(query);
+			ps.setString(1, NewRole);
+			ps.setInt(2, UserID);
+			
+			ps.execute();
+		} catch (Exception e) {
+			return false;
+		}
+		
+		return true;
+	}
+	
+	
+	public static Vector<User> GetAllTechnician(){
+		String query = "SELECT * FROM user WHERE Role = 'Computer Technician'";
+		
+		Vector<User> techList = new Vector<User>();
+		
+		try {			
+			ResultSet rs = db.executeQuery(query);
+			
+			while(rs.next()) {
+
+				int userID = rs.getInt("UserID");
+				String userName = rs.getString("UserName");
+				String userPassword = rs.getString("UserPassword");
+				String userAge = rs.getString("UserPassword");
+				String userRole = rs.getString("UserRole");
+				
+				techList.add(new User(userID, userName, userPassword, userAge, userRole));
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		
+		return techList;
+	}
 
 	
+	// Method do search username by UserID
+	// Used for better search while adding  Transaction Detail
+	public static String searchName(int userID) {
+		String query = "SELECT * FROM user WHERE UserID = ?";
+		
+		try {			
+			PreparedStatement ps = db.prepareStatement(query);
+			ps.setInt(1, userID);
+			
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+				return rs.getString("Username");
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		
+		return "";
+	}
 	
-	// --- Getter & Setter ---
+	
+	// Getter & Setter 
 	public int getUserID() {
 		return UserID;
 	}

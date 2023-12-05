@@ -1,6 +1,7 @@
 package util;
 
 import javafx.stage.Stage;
+import model.User;
 import view.Page;
 
 public class StageManager {
@@ -32,5 +33,10 @@ public class StageManager {
 		if(!this.primaryStage.isShowing()) {
 			this.primaryStage.show();
 		}
+	}
+	
+	public void setPage(Page page, User user) {
+		page.setUser(user);
+		setPage(page);
 	}
 }
