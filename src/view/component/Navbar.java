@@ -8,8 +8,18 @@ import javafx.scene.control.MenuItem;
 import model.User;
 import util.StageManager;
 import view.auth.LoginPage;
+import view.auth.RegisterPage;
 import view.pages.BookPC;
+import view.pages.MakeReport;
+import view.pages.ManageJob;
+import view.pages.ManagePC;
+import view.pages.ManageTransactionHeader;
+import view.pages.ViewAllPC;
+import view.pages.ViewAllReport;
+import view.pages.ViewAllStaff;
 import view.pages.ViewCsTransactionHistory;
+import view.pages.ViewPCBooked;
+import view.pages.ViewTechnicianJob;
 
 public class Navbar extends MenuBar{
 
@@ -21,33 +31,78 @@ public class Navbar extends MenuBar{
 	
 	private User user; // User that currently logged in
 	
-	public Navbar(User user) {
-		this.user = user;
+	public Navbar() {
+		this.user = StageManager.getInstance().getUser();
 		setComponent();
 	}
 	
+	/*
+	 * Method to set Navbar menu component
+	 * */
 	public void setComponent() {
 		menus = new Menu("Menu");
 		
-		if(this.user.getUserRole().equals("Operator")) {
-			setOperatorNav();
-		} else if(user.getUserRole().equals("Computer Technician")) {
-			setTechnicianNav();
-		} else if(user.getUserRole().equals("Admin")) {
-			setAdminNav();
-		} else {
-			setCustomerNav();
-		}
-		
-		this.menus.getItems().add(new MenuItem("Logout") {
-			{
-				setOnAction(e->{
-					StageManager.getInstance().setPage(new LoginPage());
+		// Check if user already authenticated
+		if(user != null) {
+			// Set Navbar menu item list by User Role
+			if(user.getUserRole().equals("Admin")) {
+				setAdminNav();
+			} else {
+				
+				// Add View All PC Menu for all user except Admin
+				this.menus.getItems().add(new MenuItem("View All PC") {
+					{
+						setOnAction(e->{
+							StageManager.getInstance().setPage(new ViewAllPC());
+						});
+					}
 				});
+				
+				if(this.user.getUserRole().equals("Operator")) {
+					setOperatorNav();
+				} else if(user.getUserRole().equals("Computer Technician")) {
+					setTechnicianNav();
+				} else {				
+					setCustomerNav();
+				}
+			}
+			
+			/*
+			 * Add Logout menu for all logged in Users, user will be redirected to Login page
+			 * */
+			this.menus.getItems().add(new MenuItem("Logout") {
+				{
+					setOnAction(e->{
+						StageManager.getInstance().setPage(new LoginPage());
+					});
+				}
+			});
+		} else {			
+			setAuthNavbar();
+		}
+		this.getMenus().add(menus);
+	}
+	
+	public void setAuthNavbar() {
+		MenuItem login = new MenuItem("Login");
+		MenuItem register = new MenuItem("Register");
+		
+		login.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				StageManager.getInstance().setPage(new LoginPage());
+			}
+		});
+		
+
+		register.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				StageManager.getInstance().setPage(new RegisterPage());
 			}
 		});
 
-		this.getMenus().add(menus);
+		this.menus.getItems().addAll(login,register);
 	}
 	
 	public void setCustomerNav() {
@@ -58,7 +113,7 @@ public class Navbar extends MenuBar{
 		trHistory.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				StageManager.getInstance().setPage(new ViewCsTransactionHistory(),user);
+				StageManager.getInstance().setPage(new ViewCsTransactionHistory());
 			}
 		});
 		
@@ -66,7 +121,7 @@ public class Navbar extends MenuBar{
 		bookPc.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				StageManager.getInstance().setPage(new BookPC(),user);
+				StageManager.getInstance().setPage(new BookPC());
 			}
 		});
 		
@@ -74,7 +129,7 @@ public class Navbar extends MenuBar{
 		report.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				
+				StageManager.getInstance().setPage(new MakeReport());
 			}
 		});
 		
@@ -86,7 +141,7 @@ public class Navbar extends MenuBar{
 		MenuItem jobview = new MenuItem("View Job");
 		
 		jobview.setOnAction(e->{
-			
+			StageManager.getInstance().setPage(new ViewTechnicianJob());
 		});
 		
 		this.menus.getItems().add(jobview);
@@ -95,6 +150,14 @@ public class Navbar extends MenuBar{
 	public void setOperatorNav() {
 		MenuItem bookPc = new MenuItem("View Booking");
 		MenuItem report = new MenuItem("Make Report");
+		
+		bookPc.setOnAction(e->{
+			StageManager.getInstance().setPage(new ViewPCBooked());
+		});
+		
+		report.setOnAction(e->{
+			StageManager.getInstance().setPage(new MakeReport());
+		});
 		
 		this.menus.getItems().addAll(bookPc,report);
 	}
@@ -105,6 +168,26 @@ public class Navbar extends MenuBar{
 		MenuItem pc = new MenuItem("Manage PC");
 		MenuItem report = new MenuItem("View All Report");
 		MenuItem staff = new MenuItem("Manage Staff");
+		
+		trHistory.setOnAction(e->{
+			StageManager.getInstance().setPage(new ManageTransactionHeader());
+		});
+		
+		job.setOnAction(e->{
+			StageManager.getInstance().setPage(new ManageJob());
+		});
+		
+		pc.setOnAction(e->{
+			StageManager.getInstance().setPage(new ManagePC());
+		});
+		
+		report.setOnAction(e->{
+			StageManager.getInstance().setPage(new ViewAllReport());
+		});
+		
+		staff.setOnAction(e->{
+			StageManager.getInstance().setPage(new ViewAllStaff());
+		});
 		
 		this.menus.getItems().addAll(staff,job,pc,trHistory,report);
 	}

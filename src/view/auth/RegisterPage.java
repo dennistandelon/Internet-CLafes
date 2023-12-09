@@ -6,20 +6,17 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import util.StageManager;
 import view.Page;
 
 public class RegisterPage extends Page{
 
-	BorderPane bp;
 	GridPane gp;
 	Label name_lbl, pass_lbl, confirm_lbl, age_lbl, error_lbl;
 	TextField name_tf;
 	PasswordField pass_pf, confirm_pf;
 	Spinner<Integer> age_sp;
-	Button regis_btn, login_btn;
+	Button regis_btn;
 	
 	
 	public RegisterPage() {
@@ -28,7 +25,6 @@ public class RegisterPage extends Page{
 
 	@Override
 	protected void init() {
-		bp = new BorderPane();
 		gp = new GridPane();
 		
 		name_lbl = new Label("Username");
@@ -44,7 +40,6 @@ public class RegisterPage extends Page{
 		age_sp = new Spinner<Integer>(0, 100, 13);
 		
 		regis_btn = new Button("Register");
-		login_btn = new Button("Login");
 	}
 
 	@Override
@@ -59,12 +54,9 @@ public class RegisterPage extends Page{
 		gp.add(age_lbl, 0, 3);
 		gp.add(age_sp, 1, 3);
 		gp.add(regis_btn, 0, 4);
-		gp.add(login_btn, 1, 4);
+		gp.add(error_lbl, 0, 5);
 		
-		bp.setCenter(gp);
-		bp.setBottom(error_lbl);
-		
-		this.scene.setRoot(bp);
+		mainFrame.setCenter(gp);
 	}
 
 	@Override
@@ -76,11 +68,7 @@ public class RegisterPage extends Page{
 	@Override
 	protected void setAction() {
 		
-		this.login_btn.setOnMouseClicked(e->{
-			StageManager.getInstance().setPage(new LoginPage());
-		});
-		
-		this.regis_btn.setOnMouseClicked(e->{
+		this.regis_btn.setOnAction(e->{
 			String Username = name_tf.getText().toString();
 			String Password = pass_pf.getText().toString();
 			String ConfirmPassword = confirm_pf.getText().toString();

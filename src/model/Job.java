@@ -26,7 +26,7 @@ public class Job {
 	
 	public static boolean AddNewJob(int UserID, String PcID) {
 		String query = "INSERT INTO job (UserID,PC_ID,JobStatus)"
-				+ " VALUES(?,?,'Uncomplete')";
+				+ " VALUES(?,?,'UnComplete')";
 		
 		try {
 			PreparedStatement ps = db.prepareStatement(query);

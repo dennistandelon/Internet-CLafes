@@ -5,20 +5,20 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import model.User;
 import util.StageManager;
 import view.Page;
+import view.pages.ManagePC;
 import view.pages.ViewAllPC;
 
 public class LoginPage extends Page {
 
-	BorderPane bp;
 	GridPane gp;
 	Label name_lbl, pass_lbl, error_lbl;
 	TextField name_tf;
 	PasswordField pass_pf;
-	Button regis_btn, login_btn;
+	Button login_btn;
 	
 	public LoginPage() {
 		this.title = "Internet Clafes - Login";
@@ -26,7 +26,6 @@ public class LoginPage extends Page {
 
 	@Override
 	protected void init() {
-		bp = new BorderPane();
 		gp = new GridPane();
 		
 		name_lbl = new Label("Username");
@@ -36,7 +35,6 @@ public class LoginPage extends Page {
 		name_tf = new TextField("");
 		pass_pf = new PasswordField();
 		
-		regis_btn = new Button("Register");
 		login_btn = new Button("Login");
 	}
 
@@ -48,12 +46,9 @@ public class LoginPage extends Page {
 		gp.add(pass_lbl, 0, 1);
 		gp.add(pass_pf, 1, 1);
 		gp.add(login_btn, 0, 2);
-		gp.add(regis_btn, 1, 2);
+		gp.add(error_lbl, 0, 3);
 		
-		bp.setCenter(gp);
-		bp.setBottom(error_lbl);
-		
-		this.scene.setRoot(bp);
+		mainFrame.setCenter(gp);
 	}
 
 	@Override
@@ -64,21 +59,21 @@ public class LoginPage extends Page {
 
 	@Override
 	protected void setAction() {
-		
-		this.regis_btn.setOnMouseClicked(e->{
-			StageManager.getInstance().setPage(new RegisterPage());
-		});
-		
-		this.login_btn.setOnMouseClicked(e->{
+	
+		this.login_btn.setOnAction(e->{
 			String username = name_tf.getText().toString();
 			String password = pass_pf.getText().toString();
 			
 			error_lbl.setText(UserController.validateLogin(username, password));
 			
 			if(error_lbl.getText().equals("success")) {
-				ViewAllPC home = new ViewAllPC();
-				home.setUser(UserController.GetUserData(username, password));
-				StageManager.getInstance().setPage((Page)home);
+				User user = UserController.GetUserData(username, password);
+				StageManager.getInstance().setUser(user);
+				if(user.getUserRole().equals("Admin")) {
+					StageManager.getInstance().setPage(new ManagePC());
+				} else {
+					StageManager.getInstance().setPage(new ViewAllPC());					
+				}
 			}
 		});
 

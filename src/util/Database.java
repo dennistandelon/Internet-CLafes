@@ -66,23 +66,8 @@ public final class Database {
 		return rs;
 	}
 	
-	
-	/* 
-	 * This method used to execute INSERT, UPDATE, DELETE Statement
-	 * */
-	public boolean executeUpdate(String Query) {
-		try {
-			statement.executeUpdate(Query);
-		} catch (Exception e) {
-			System.out.println("Failed to Execute Query");
-			return false;
-		}
-		return true;
-	}
-	
-	
 	/*
-	 * This method used to execute parameterized SQL Statement
+	 * This method used to create parameterized SQL Statement
 	 * Gain: Avoid SQL Injection on query
 	 * */
 	public PreparedStatement prepareStatement(String Query) {

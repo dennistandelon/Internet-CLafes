@@ -27,9 +27,7 @@ public class TransactionDetail {
 	public static Vector<TransactionDetail> GetUserTransactionDetail(int UserID){
 		Vector<TransactionDetail> trList = new Vector<TransactionDetail>();
 		
-		String query = "SELECT transactiondetail.* "
-				+ "FROM user u, transactiondetail td"
-				+ "WHERE u.Username = td.CustomerName AND u.UserID = ?";
+		String query = "SELECT td.* FROM transactiondetail td JOIN user u ON u.UserName = td.CustomerName WHERE u.UserID = ?";
 		
 		try {
 			PreparedStatement ps = db.prepareStatement(query);
@@ -96,6 +94,7 @@ public class TransactionDetail {
 			}
 			
 		} catch (Exception e) {
+			e.printStackTrace();
 			return false;
 		}
 		

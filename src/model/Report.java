@@ -63,7 +63,7 @@ public class Report {
 				reportList.add(new Report(reportID, userRole, pC_ID, note, reportDate));
 			}
 		} catch (Exception e) {
-			
+			e.printStackTrace();
 		}
 		
 		return reportList;

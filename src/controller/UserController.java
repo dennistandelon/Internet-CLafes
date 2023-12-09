@@ -135,7 +135,7 @@ public class UserController {
 		}
 		
 		if(!user.getUserPassword().equals(password)) {
-			return "Invalid Password!";
+			return "Invalid Username or Password!";
 		}
 		
 		return "success";

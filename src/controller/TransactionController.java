@@ -7,7 +7,7 @@ import model.*;
 public class TransactionController {
 
 	public static String AddTransaction(int TransactionID, Vector<PCBook> PcBook, int StaffID) {
-		if(TransactionHeader.AddNewTransactionHeader(TransactionID,StaffID, PcBook.get(0).getBookedDate())) {
+		if(!TransactionHeader.AddNewTransactionHeader(TransactionID,StaffID, PcBook.get(0).getBookedDate())) {
 			return "Error while adding new transaction header";
 		}
 		

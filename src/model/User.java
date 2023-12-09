@@ -37,7 +37,7 @@ public class User {
 				int userID = rs.getInt("UserID");
 				String userName = rs.getString("UserName");
 				String userPassword = rs.getString("UserPassword");
-				String userAge = rs.getString("UserPassword");
+				String userAge = rs.getString("UserAge");
 				String userRole = rs.getString("UserRole");
 				
 				userList.add(new User(userID, userName, userPassword, userAge, userRole));
@@ -63,7 +63,7 @@ public class User {
 				int userID = rs.getInt("UserID");
 				String userName = rs.getString("UserName");
 				String userPassword = rs.getString("UserPassword");
-				String userAge = rs.getString("UserPassword");
+				String userAge = rs.getString("UserAge");
 				String userRole = rs.getString("UserRole");
 				
 				return new User(userID, userName, userPassword, userAge, userRole);
@@ -114,7 +114,7 @@ public class User {
 	
 	
 	public static Vector<User> GetAllTechnician(){
-		String query = "SELECT * FROM user WHERE Role = 'Computer Technician'";
+		String query = "SELECT * FROM user WHERE UserRole = 'Computer Technician'";
 		
 		Vector<User> techList = new Vector<User>();
 		
@@ -126,7 +126,7 @@ public class User {
 				int userID = rs.getInt("UserID");
 				String userName = rs.getString("UserName");
 				String userPassword = rs.getString("UserPassword");
-				String userAge = rs.getString("UserPassword");
+				String userAge = rs.getString("UserAge");
 				String userRole = rs.getString("UserRole");
 				
 				techList.add(new User(userID, userName, userPassword, userAge, userRole));

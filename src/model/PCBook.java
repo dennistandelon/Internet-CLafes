@@ -26,7 +26,7 @@ public class PCBook {
 
 	
 	public static boolean DeleteBookData(int BookID) {
-		String query = "DELETE pcbook WHERE BookID = ?";
+		String query = "DELETE FROM pcbook WHERE BookID = ?";
 		
 		try {
 			PreparedStatement ps = db.prepareStatement(query);
@@ -160,26 +160,26 @@ public class PCBook {
 				String pC_ID = rs.getString("PC_ID");
 				int userID = rs.getInt("UserID");
 				Date bookedDate = rs.getDate("BookedDate");
-				
 				booklist.add(new PCBook(bookID, pC_ID, userID, bookedDate));
 			}
 		} catch (Exception e) {
-			// TODO: handle exception
+			
 		}
 		
 		return booklist;
 	}
 	
-	public static boolean AssignUserToNewPC(int UserID, String NewPCID) {
-		String query = "UPDATE pcbook SET PC_ID = ? WHERE UserID = ?";
+	public static boolean AssignUserToNewPC(int BookID, String NewPCID) {
+		String query = "UPDATE pcbook SET PC_ID = ? WHERE BookID = ?";
 		
 		try {
 			PreparedStatement ps = db.prepareStatement(query);
 			ps.setString(1, NewPCID);
-			ps.setInt(2, UserID);
+			ps.setInt(2, BookID);
 			
 			ps.execute();
 		} catch (Exception e) {
+			e.printStackTrace();
 			return false;
 		}
 		

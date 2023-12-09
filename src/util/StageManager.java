@@ -13,8 +13,10 @@ public class StageManager {
 
 	private static StageManager globalInstance;
 	private Stage primaryStage;
+	private User currentUser;
 	
 	private StageManager() {
+		this.currentUser = null;
 		this.primaryStage = new Stage();
 	}
 	
@@ -35,8 +37,11 @@ public class StageManager {
 		}
 	}
 	
-	public void setPage(Page page, User user) {
-		page.setUser(user);
-		setPage(page);
+	public void setUser(User user) {
+		this.currentUser = user;
+	}
+	
+	public User getUser() {
+		return this.currentUser;
 	}
 }

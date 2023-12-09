@@ -2,8 +2,11 @@ package view;
 
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.layout.BorderPane;
 import model.User;
 import util.Environment;
+import util.StageManager;
+import view.component.Navbar;
 
 public abstract class Page {
 
@@ -13,8 +16,9 @@ public abstract class Page {
 	 * */
 	
 	public String title;
+	protected User currentUser; // Authorized user
 	protected Scene scene;
-	protected User currentUser;
+	protected BorderPane mainFrame;
 	
 	protected abstract void init(); // Used for initialize Component
 	protected abstract void setLayout(); // Used for layouting Component
@@ -22,7 +26,9 @@ public abstract class Page {
 	protected abstract void setAction(); // Used to set several action for component
 	
 	public Page() {
-		this.scene = new Scene(new Group(),Environment.SCREEN_WIDTH,Environment.SCREEN_HEIGHT);
+		this.currentUser = StageManager.getInstance().getUser();
+		this.masterLayout();
+		
 		init();
 		setLayout();
 		setStyle();
@@ -33,7 +39,14 @@ public abstract class Page {
 		return this.scene;
 	}
 	
-	public void setUser(User user) {
-		this.currentUser = user;
+	/*
+	 * Setup the main layout for the scene
+	 * */
+	public void masterLayout() {
+		this.mainFrame = new BorderPane();
+		this.mainFrame.setTop(new Navbar());
+		
+		this.scene = new Scene(new Group(),Environment.SCREEN_WIDTH,Environment.SCREEN_HEIGHT);
+		this.scene.setRoot(this.mainFrame);
 	}
 }

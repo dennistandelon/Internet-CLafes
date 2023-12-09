@@ -13,7 +13,7 @@ public class PCController {
 	public static String UpdatePCCondition(String PcID, String Condition) {
 	
 		if(!Condition.equals("Usable") && !Condition.equals("Maintenance") && !Condition.equals("Broken")) {
-			return "Select the condition";
+			return "Invalid condition (Usable | Maintenance | Broken)";
 		}
 		
 		if(!PC.UpdatePCCondition(PcID, Condition)) {
@@ -33,6 +33,18 @@ public class PCController {
 	}
 
 	public static String AddNewPC(String PcID) {
+		Vector<PC> pcs = GetAllPCData();
+		
+		if(PcID.isBlank()) {
+			return "PC ID cannot be empty";
+		}
+
+		for (PC pc : pcs) {
+			if(pc.getPC_ID().equals(PcID)) {
+				return "PC ID must be Unique";
+			}
+		}
+		
 		if(!PC.AddNewPC(PcID)) {
 			return "Failed to Add New PC";
 		}

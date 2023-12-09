@@ -29,6 +29,7 @@ public class PC {
 			
 			ps.execute();
 		} catch (Exception e) {
+			e.printStackTrace();
 			return false;
 		}
 		

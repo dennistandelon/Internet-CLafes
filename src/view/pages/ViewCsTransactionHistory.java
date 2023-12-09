@@ -2,15 +2,11 @@ package view.pages;
 
 import java.sql.Date;
 
-import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.BorderPane;
 import model.TransactionDetail;
-import model.User;
 import view.Page;
-import view.component.Navbar;
 
 public class ViewCsTransactionHistory extends Page{
 
@@ -19,28 +15,14 @@ public class ViewCsTransactionHistory extends Page{
 	private TableColumn<TransactionDetail, Integer> idCol;
 	private TableColumn<TransactionDetail, Date> dateCol;
 	
-	private BorderPane bp;
-	
-	
 	public ViewCsTransactionHistory() {
 		this.title = "Internet Clafes - Customer Transaction History";
-	}
-	
-	public void setUser(User user) {
-		currentUser = user;
-		
-		Navbar navbar = new Navbar(currentUser);
-		
-		bp.setTop(navbar);
-		
-		details.getItems().addAll(TransactionDetail.GetUserTransactionDetail(currentUser.getUserID()));
 	}
 
 	@Override
 	protected void init() {
 		
 		details = new TableView<TransactionDetail>();
-		bp = new BorderPane();
 
 		idCol = new TableColumn<TransactionDetail,Integer>("Transaction ID");
 		idCol.setCellValueFactory(new PropertyValueFactory<TransactionDetail,Integer>("TransactionID"));
@@ -62,10 +44,9 @@ public class ViewCsTransactionHistory extends Page{
 		details.getColumns().add(nameCol);
 		details.getColumns().add(dateCol);
 		
-		bp.setCenter(details);
+		details.getItems().addAll(TransactionDetail.GetUserTransactionDetail(currentUser.getUserID()));
 		
-
-		this.scene.setRoot(bp);
+		mainFrame.setCenter(details);
 	}
 
 	@Override
