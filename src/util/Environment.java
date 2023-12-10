@@ -2,12 +2,11 @@ package util;
 
 public class Environment {
 
-	/*
-	 * Constants used in the application.
-	 * */
-	
+	// Define Constants used in the application.
 	public static int SCREEN_WIDTH = 800;
 	public static int SCREEN_HEIGHT = 520;
+	
+	// Define Databases Credentials Constants
 	public static String USERNAME = "root";
 	public static String PASSWORD = "";
 	public static String HOST = "localhost";

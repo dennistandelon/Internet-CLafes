@@ -4,6 +4,9 @@ import java.sql.Date;
 import java.util.Vector;
 
 import controller.PCBookController;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
@@ -12,22 +15,28 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import model.PCBook;
 import view.Page;
 
 public class ViewPCBooked extends Page {
 
+	// Table view component for displaying Booked PC List
+	private TableView<PCBook> pcs;
+	private TableColumn<PCBook, String> idCol, bookidCol, dateCol, userCol;
+	
+	// Component for Cancel Book, Finish Book, and Assign User to new PC
 	private Label finish_lbl, cancel_lbl, update_lbl, pc_lbl, update_error_lbl;
 	private DatePicker finish_dp, cancel_dp;
 	private TextField update_tf;
 	private Button finish_btn, cancel_btn, update_btn;
-	
-	private TableView<PCBook> pcs;
-	private TableColumn<PCBook, String> idCol, bookidCol, dateCol, userCol;
-
-	private HBox hb;
 	private VBox left_vb, right_vb, center_vb;
+	private HBox hb;
+	
+	// add blank space between component for style
+	private Region filler1, filler2; 
 	
 	public ViewPCBooked() {
 		this.title = "Internet Clafes - View Booked PC";
@@ -49,6 +58,8 @@ public class ViewPCBooked extends Page {
 		cancel_btn = new Button("Cancel");
 		update_btn = new Button("Assign");
 		
+		filler1 = new Region();
+		filler2 = new Region();
 		hb = new HBox();
 		left_vb  = new VBox();
 		center_vb = new VBox();
@@ -93,7 +104,7 @@ public class ViewPCBooked extends Page {
 		right_vb.getChildren().add(update_btn);
 		right_vb.getChildren().add(update_error_lbl);
 
-		hb.getChildren().addAll(left_vb,center_vb,right_vb);
+		hb.getChildren().addAll(left_vb,filler1,center_vb,filler2,right_vb);
 		
 		mainFrame.setCenter(pcs);
 		mainFrame.setBottom(hb);
@@ -101,12 +112,34 @@ public class ViewPCBooked extends Page {
 
 	@Override
 	protected void setStyle() {
-		// TODO Auto-generated method stub
 
+		idCol.prefWidthProperty().bind(pcs.widthProperty().multiply(0.25));
+        bookidCol.prefWidthProperty().bind(pcs.widthProperty().multiply(0.25));
+        userCol.prefWidthProperty().bind(pcs.widthProperty().multiply(0.25));
+        dateCol.prefWidthProperty().bind(pcs.widthProperty().multiply(0.25));
+
+        HBox.setHgrow(filler1, Priority.ALWAYS);
+        HBox.setHgrow(filler2, Priority.ALWAYS);
+
+        HBox.setMargin(left_vb, new Insets(20));
+        HBox.setMargin(center_vb, new Insets(20));
+        HBox.setMargin(right_vb, new Insets(20));
+        
+        pcs.setCursor(Cursor.HAND);
+        finish_btn.setCursor(Cursor.HAND);
+        cancel_btn.setCursor(Cursor.HAND);
+        update_btn.setCursor(Cursor.HAND);
+        
+        hb.setAlignment(Pos.CENTER);
+        update_error_lbl.setStyle("-fx-text-fill: red;" + "-fx-font-weight:bold;");
 	}
 
 	@Override
 	protected void setAction() {
+		
+		/*
+		 * Setup update description label when the items in Table view being selected
+		 * */
 		pcs.setOnMouseClicked(e->{
 			int index = pcs.getSelectionModel().getSelectedIndex();
 			update_lbl.setText("Assign User to new PC, Selected Book Id: " + pcs.getItems().get(index).getBookID());
@@ -143,6 +176,10 @@ public class ViewPCBooked extends Page {
 
 	}
 	
+	
+	/*
+	 * Additional method for refreshing table view data
+	 * */
 	private void refreshTable() {
 		pcs.getItems().clear();
 		pcs.getItems().addAll(PCBookController.GetAllPCBookedData());

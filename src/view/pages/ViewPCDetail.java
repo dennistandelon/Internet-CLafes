@@ -5,7 +5,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import model.PC;
 import util.StageManager;
@@ -13,14 +12,13 @@ import view.Page;
 
 public class ViewPCDetail extends Page {
 
-	private Label id_lbl, condition_lbl, new_con_lbl, update_lbl;
+	private Label id_lbl, condition_lbl, new_con_lbl, error_lbl;
 	private TextField condition_tf;
-	private Button update_btn, delete_btn, open_btn;
+	private Button update_btn, delete_btn;
 	private PC data;
 	
 	private GridPane gp;
 	private VBox vb;
-	private HBox button_list;
 	
 	/*
 	 * Page used for admin to update and delete specific PC
@@ -37,8 +35,8 @@ public class ViewPCDetail extends Page {
 		});
 		
 		update_btn.setOnAction(e->{
-			PCController.UpdatePCCondition(id, condition_tf.getText());
-			StageManager.getInstance().setPage(new ManagePC());	
+			error_lbl.setText(PCController.UpdatePCCondition(id, condition_tf.getText()));
+			if(error_lbl.getText().equals("success")) StageManager.getInstance().setPage(new ManagePC());	
 		});
 	}
 
@@ -49,13 +47,11 @@ public class ViewPCDetail extends Page {
 		
 		new_con_lbl = new Label("New Condition");
 		condition_tf = new TextField();
-		update_lbl = new Label("Update PC Condition");
 		
 		update_btn = new Button("Update");
-		open_btn = new Button("Make Update");
 		delete_btn = new Button("Delete");
 		
-		button_list = new HBox();
+		error_lbl = new Label();
 		
 		gp = new GridPane();
 		vb = new VBox();
@@ -64,28 +60,23 @@ public class ViewPCDetail extends Page {
 	@Override
 	protected void setLayout() {
 		
-		gp.add(update_lbl, 0, 0);
-		gp.add(new_con_lbl, 0, 1);
-		gp.add(condition_tf, 1, 1);
-		gp.add(update_btn, 0, 2);
+		gp.add(new_con_lbl, 0, 0);
+		gp.add(condition_tf, 1, 0);
+		gp.add(update_btn, 0, 1);
+		gp.add(delete_btn, 1, 1);
 		
-		button_list.getChildren().addAll(open_btn,delete_btn);
-		vb.getChildren().addAll(id_lbl, condition_lbl, button_list);
+		vb.getChildren().addAll(id_lbl, condition_lbl, gp,error_lbl);
 		
 		mainFrame.setCenter(vb);
 	}
 
 	@Override
 	protected void setStyle() {
-		// TODO Auto-generated method stub
-
+		error_lbl.setStyle("-fx-text-fill: red;" + "-fx-font-weight:bold;");
 	}
 
 	@Override
 	protected void setAction() {
-		open_btn.setOnMouseClicked(e->{
-			mainFrame.setBottom(gp);
-		});
 
 	}
 	

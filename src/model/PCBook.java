@@ -24,7 +24,11 @@ public class PCBook {
 		BookedDate = bookedDate;
 	}
 
-	
+	/*
+	 * Method to delete book data from database 
+	 * @params 	BookID, the id of selected book
+	 * @return true if the execution success, false if the execution failed
+	 * */
 	public static boolean DeleteBookData(int BookID) {
 		String query = "DELETE FROM pcbook WHERE BookID = ?";
 		
@@ -40,6 +44,12 @@ public class PCBook {
 		return true;
 	}
 	
+	/*
+	 * Method to get PCBooked data by id and date
+	 * @params 	PcID, the id of selected pc
+	 * 			date, the date selected to book
+	 * @return PCBook if pcbook data available, null if pcbook data is not found
+	 * */
 	public static PCBook GetPCBookedData(String PcID, Date date) {
 		String query = "SELECT * FROM pcbook WHERE PC_ID = ? AND BookedDate = ?";
 		
@@ -65,6 +75,11 @@ public class PCBook {
 		return null;
 	}
 	
+	/*
+	 * Method to get specified book data from database 
+	 * @params 	BookID, the id of selected book
+	 * @return PCBook data of selected id
+	 * */
 	public static PCBook GetPCBookedDetail(int BookID) {
 		String query = "SELECT * FROM pcbook WHERE BookID = ?";
 		
@@ -89,6 +104,13 @@ public class PCBook {
 		return null;
 	}
 	
+	/*
+	 * Method to add new book data to database 
+	 * @params 	PcID, the id of selected pc
+	 * 			UserID, the user created the book
+	 * 			BookedDate, the date selected
+	 * @return true if the execution success, false if the execution failed
+	 * */
 	public static boolean AddNewBook(String PcID, int UserID, Date BookedDate) {
 		
 		String query = "INSERT INTO pcbook (PC_ID,UserID,BookedDate) VALUES(?,?,?)";
@@ -107,9 +129,15 @@ public class PCBook {
 		return true;
 	}
 	
+	/*
+	 * Method to finish booking 
+	 * @params PCBooks, the PCBook list data to finish
+	 * @return true if the execution success, false if the execution failed
+	 * */
 	public static boolean FinishBook(Vector<PCBook> PCBooks) {
 	
 		try {
+			// Delete all finished book data from database
 			for (PCBook pcBook : PCBooks) {
 				if(!PCBook.DeleteBookData(pcBook.getBookID())) {
 					return false;
@@ -122,6 +150,10 @@ public class PCBook {
 		return true;
 	}
 	
+	/*
+	 * Method to get all book data from database 
+	 * @return booklist, all the PCBook fata from databases
+	 * */
 	public static Vector<PCBook> GetAllPCBookedData(){
 		Vector<PCBook> booklist = new Vector<PCBook>();
 		
@@ -144,6 +176,11 @@ public class PCBook {
 		return booklist;
 	}
 	
+	/*
+	 * Method to get book data from database filtered by BookedDate
+	 * @params date, the specified date selected by user
+	 * @return booklist, all the pcbook data from selected date
+	 * */
 	public static Vector<PCBook> GetPCBookedByDate(Date date){
 		Vector<PCBook> booklist = new Vector<PCBook>();
 		
@@ -169,6 +206,12 @@ public class PCBook {
 		return booklist;
 	}
 	
+	/*
+	 * Method to update pcid from PCBook data 
+	 * @params 	BookID, the id of selected book
+	 * 			NewPCID, the new pc id selected to assign
+	 * @return true if the execution success, false if the execution failed
+	 * */
 	public static boolean AssignUserToNewPC(int BookID, String NewPCID) {
 		String query = "UPDATE pcbook SET PC_ID = ? WHERE BookID = ?";
 		

@@ -23,7 +23,12 @@ public class Job {
 		JobStatus = jobStatus;
 	}
 	
-	
+	/*
+	 * Method to add new Job data to databases 
+	 * @params 	UserID, the id of user
+	 * 			PcID, the id of the selected pc
+	 * @return true if the execution success, false if the execution failed
+	 * */
 	public static boolean AddNewJob(int UserID, String PcID) {
 		String query = "INSERT INTO job (UserID,PC_ID,JobStatus)"
 				+ " VALUES(?,?,'UnComplete')";
@@ -42,6 +47,12 @@ public class Job {
 		return true;
 	}
 	
+	/*
+	 * Method to update Job status data 
+	 * @params 	jobID, the id of selected job
+	 * 			jobStatus, the new job status to change
+	 * @return true if the execution success, false if the execution failed
+	 * */
 	public static boolean UpdateJobStatus(int jobID, String jobStatus) {
 		String query = "UPDATE job SET JobStatus = ? WHERE JobID = ?";
 		
@@ -58,6 +69,11 @@ public class Job {
 		return true;
 	}
 	
+	/*
+	 * Method to get the Job data by PC_ID from databases
+	 * @params 	PcID, the pcid from the user input
+	 * @return jobList, all the job data exist in database
+	 * */
 	public static Job GetPcOnWorkingList(String PcID) {
 		String query = "SELECT * FROM job WHERE PC_ID = ? AND JobStatus = 'Uncomplete'";
 		
@@ -81,6 +97,11 @@ public class Job {
 		return null;
 	}
 	
+	/*
+	 * Method to get Job data by userid from databases
+	 * @params 	UserID, the id of the user with the Computer Technician Role
+	 * @return jobList, all the job data for the technician
+	 * */
 	public static Vector<Job> GetTechnicianJob(int UserID) {	
 		Vector<Job> jobList = new Vector<Job>();
 		
@@ -105,6 +126,10 @@ public class Job {
 		return jobList;
 	}
 	
+	/*
+	 * Method to get all Job data from databases
+	 * @return jobList, all the job data exist in database
+	 * */
 	public static Vector<Job> GetAllJobData() {	
 		Vector<Job> jobList = new Vector<Job>();
 		

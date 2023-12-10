@@ -8,6 +8,8 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import model.TransactionDetail;
 import model.TransactionHeader;
 import view.Page;
@@ -87,14 +89,30 @@ public class ManageTransactionHeader extends Page {
 
 	@Override
 	protected void setStyle() {
-		// TODO Auto-generated method stub
+		hidCol.prefWidthProperty().bind(ths.widthProperty().multiply(0.25));
+        sidCol.prefWidthProperty().bind(ths.widthProperty().multiply(0.25));
+        sfCol.prefWidthProperty().bind(ths.widthProperty().multiply(0.25));
+        dateCol.prefWidthProperty().bind(ths.widthProperty().multiply(0.25));
 
+        pidCol.prefWidthProperty().bind(dtl.widthProperty().multiply(0.25));
+        didCol.prefWidthProperty().bind(dtl.widthProperty().multiply(0.25));
+        cnCol.prefWidthProperty().bind(dtl.widthProperty().multiply(0.25));
+        bookCol.prefWidthProperty().bind(dtl.widthProperty().multiply(0.25));
+        
+        dtl.prefHeightProperty().bind(scene.heightProperty().multiply(0.5));
+        
+        dtl_lbl.setFont(Font.font(null,FontWeight.BOLD,14));
 	}
 
 	@Override
 	protected void setAction() {
 		ths.setOnMouseClicked(e->{
-			int trid = ths.getItems().get(ths.getSelectionModel().getSelectedIndex()).getTransactionID();
+			int index =ths.getSelectionModel().getSelectedIndex();
+			if(index < 0) {
+				return;
+			}
+			int trid = ths.getItems().get(index).getTransactionID();
+			dtl.getItems().clear();
 			dtl.getItems().addAll(TransactionController.GetAllTransactionDetail(trid));
 			dtl_lbl.setText("Selected Transaction ID: " + trid + ", here is the details:");
 			mainFrame.setBottom(dtlBox);

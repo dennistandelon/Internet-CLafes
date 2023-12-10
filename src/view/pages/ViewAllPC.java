@@ -41,7 +41,8 @@ public class ViewAllPC extends Page{
 
 	@Override
 	protected void setStyle() {
-		// TODO Auto-generated method stub
+		idCol.prefWidthProperty().bind(pcs.widthProperty().multiply(0.5));
+        statusCol.prefWidthProperty().bind(pcs.widthProperty().multiply(0.5));
 		
 	}
 

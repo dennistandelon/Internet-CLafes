@@ -26,6 +26,7 @@ public final class Database {
 	
 	private Database() {
 		try {
+			// Generate connection with the Database Driver
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			connect = DriverManager.getConnection(CONNECTION, USERNAME, PASSWORD);
 			statement = connect.createStatement();
@@ -68,7 +69,8 @@ public final class Database {
 	
 	/*
 	 * This method used to create parameterized SQL Statement
-	 * Gain: Avoid SQL Injection on query
+	 * @params query the query to create prepared statement
+	 * @returns ps the Prepared Statement Object
 	 * */
 	public PreparedStatement prepareStatement(String Query) {
 		PreparedStatement ps = null;

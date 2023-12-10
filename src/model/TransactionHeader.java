@@ -24,6 +24,10 @@ public class TransactionHeader {
 		TransactionDate = transactionDate;
 	}
 
+	/*
+	 * Method to get all transaction header data from database 
+	 * @return thList, all transaction header data
+	 * */
 	public static Vector<TransactionHeader> GetAllTransactionHeaderData() {
 		Vector<TransactionHeader> thList = new Vector<TransactionHeader>();
 		
@@ -48,16 +52,41 @@ public class TransactionHeader {
 		return thList;
 	}
 	
+	/*
+	 * Method to add new transaction header data to database 
+	 * @params 	id, the id generated for transaction header
+	 * 			StaffID, the id of the staff finished the book
+	 * 			TransactionDate, the date of the transaction finished
+	 * @return true if the execution success, false if the execution failed
+	 * */
 	public static boolean AddNewTransactionHeader(int id, int StaffID, Date TransactionDate) {
 		
 		String query = "INSERT INTO transactionheader"
 				+ " VALUES(?,?,?,?)";
 		
+		// Search Staffname by StaffID
+		String username = "";
+		try {
+			String user_query = "SELECT * FROM user WHERE UserID = ?";
+			
+			PreparedStatement user_ps = db.prepareStatement(user_query);
+			user_ps.setInt(1, StaffID);
+				
+			ResultSet rs = user_ps.executeQuery();
+			if(rs.next()) {
+				username = rs.getString("Username");
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+					
+		
 		try {
 			PreparedStatement ps = db.prepareStatement(query);
 			ps.setInt(1, id);
 			ps.setInt(2, StaffID);
-			ps.setString(3, User.searchName(StaffID));
+			
+			ps.setString(3, username);
 			ps.setDate(4, TransactionDate);
 			
 			ps.execute();

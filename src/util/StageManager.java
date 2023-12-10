@@ -7,11 +7,11 @@ import view.Page;
 public class StageManager {
 	
 	/*
-	 * Kelas ini berfungsi untuk mengatur instance Stage yang ada di aplikasi.
-	 * Di buat dengan Pattern Singleton sehingga hanya ada satu global instance Stage dalam aplikasi.
+	 * This class used for maintain Stage instance in the application.
+	 * Used Singleton pattern so there is only one global Stage instance used in this Application.
 	 * */
 
-	private static StageManager globalInstance;
+	private static StageManager globalInstance; // global instance
 	private Stage primaryStage;
 	private User currentUser;
 	
@@ -20,6 +20,7 @@ public class StageManager {
 		this.primaryStage = new Stage();
 	}
 	
+	// Method to access the StageManager global instance
 	public static StageManager getInstance() {
 		if(globalInstance == null) {
 			globalInstance = new StageManager();
@@ -28,6 +29,10 @@ public class StageManager {
 		return globalInstance;
 	}
 
+	/*
+	 * Method to set scene into Stage
+	 * @params page, Concrete class that inherit abstract Page class 
+	 * */
 	public void setPage(Page page) {
 		this.primaryStage.setScene(page.getScene());
 		this.primaryStage.setTitle(page.title);
@@ -37,6 +42,7 @@ public class StageManager {
 		}
 	}
 	
+	// Getter and Setter
 	public void setUser(User user) {
 		this.currentUser = user;
 	}

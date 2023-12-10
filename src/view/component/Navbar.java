@@ -27,8 +27,8 @@ public class Navbar extends MenuBar{
 	 * This class used to generate Navbar component for the pages,
 	 * depend on the user role
 	 * */
-	private Menu menus;
 	
+	private Menu menus; 
 	private User user; // User that currently logged in
 	
 	public Navbar() {
@@ -36,17 +36,17 @@ public class Navbar extends MenuBar{
 		setComponent();
 	}
 	
-	/*
-	 * Method to set Navbar menu component
-	 * */
+	//Method to Define Navbar menu component
 	public void setComponent() {
 		menus = new Menu("Menu");
 		
 		// Check if user already authenticated
 		if(user != null) {
-			// Set Navbar menu item list by User Role
+			
+			// Set Navbar menu item list for admin
 			if(user.getUserRole().equals("Admin")) {
 				setAdminNav();
+				
 			} else {
 				
 				// Add View All PC Menu for all user except Admin
@@ -58,6 +58,7 @@ public class Navbar extends MenuBar{
 					}
 				});
 				
+				// Set Navbar menu item list by User Role
 				if(this.user.getUserRole().equals("Operator")) {
 					setOperatorNav();
 				} else if(user.getUserRole().equals("Computer Technician")) {
@@ -68,11 +69,13 @@ public class Navbar extends MenuBar{
 			}
 			
 			/*
-			 * Add Logout menu for all logged in Users, user will be redirected to Login page
+			 * Add Logout menu for all logged in Users, 
+			 * user will be redirected to Login page
 			 * */
 			this.menus.getItems().add(new MenuItem("Logout") {
 				{
 					setOnAction(e->{
+						StageManager.getInstance().setUser(null);
 						StageManager.getInstance().setPage(new LoginPage());
 					});
 				}
@@ -83,6 +86,11 @@ public class Navbar extends MenuBar{
 		this.getMenus().add(menus);
 	}
 	
+	
+	/*
+	 * Method to set Navbar menu component 
+	 * for unauthorized user
+	 * */
 	public void setAuthNavbar() {
 		MenuItem login = new MenuItem("Login");
 		MenuItem register = new MenuItem("Register");
@@ -105,6 +113,10 @@ public class Navbar extends MenuBar{
 		this.menus.getItems().addAll(login,register);
 	}
 	
+	/*
+	 * Method to set Navbar menu items component,
+	 * for user with role Customer
+	 * */
 	public void setCustomerNav() {
 		MenuItem trHistory = new MenuItem("Transaction History");
 		MenuItem bookPc = new MenuItem("Book PC");
@@ -136,7 +148,11 @@ public class Navbar extends MenuBar{
 		
 		this.menus.getItems().addAll(trHistory, bookPc, report);
 	}
-	
+
+	/*
+	 * Method to set Navbar menu items component,
+	 * for user with role Computer Technician
+	 * */
 	public void setTechnicianNav() {
 		MenuItem jobview = new MenuItem("View Job");
 		
@@ -146,7 +162,11 @@ public class Navbar extends MenuBar{
 		
 		this.menus.getItems().add(jobview);
 	}
-	
+
+	/*
+	 * Method to set Navbar menu items component,
+	 * for user with role Operator
+	 * */
 	public void setOperatorNav() {
 		MenuItem bookPc = new MenuItem("View Booking");
 		MenuItem report = new MenuItem("Make Report");
@@ -162,6 +182,10 @@ public class Navbar extends MenuBar{
 		this.menus.getItems().addAll(bookPc,report);
 	}
 	
+	/*
+	 * Method to set Navbar menu items component,
+	 * for user with role Admin
+	 * */
 	public void setAdminNav() {
 		MenuItem trHistory = new MenuItem("View All Transaction");
 		MenuItem job = new MenuItem("Manage Job");

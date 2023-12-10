@@ -27,6 +27,13 @@ public class Report {
 		ReportDate = reportDate;
 	}
 
+	/*
+	 * Method to add new report data from database
+	 * @params 	UserRole, the UserRole of User Model
+	 * 			PcID, the PC_ID of the selected PC Model
+	 * 			ReportNote, the report note user input
+	 * @return true if the execution success, flase if the execution failed
+	 * */
 	public static boolean AddNewReport(String UserRole, String PcID, String ReportNote) {
 		String query = "INSERT INTO report (UserRole,PC_ID,ReportNote,ReportDate)"
 				+ " VALUES(?,?,?,?)";
@@ -47,6 +54,10 @@ public class Report {
 		return true;
 	}
 	
+	/*
+	 * Method to get all report data from database
+	 * @return reportList, all report data from database
+	 * */
 	public static Vector<Report> GetAllReportData(){
 		Vector<Report> reportList = new Vector<Report>();
 		

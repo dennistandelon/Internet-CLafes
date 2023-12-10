@@ -6,10 +6,10 @@ import model.Job;
 import model.User;
 
 public class JobController {
-
+	
 	public static String AddNewJob(int UserID, String PcID) {
 	
-		// Validate either the user is a technician or not
+		// Validate the user is a technician or not
 		boolean isTechnician = false;
 		Vector<User> techs = UserController.GetAllTechnician();
 		for (User user : techs) {
@@ -57,7 +57,7 @@ public class JobController {
 			return "Job Status Must be Complete or UnComplete";
 		}
 		
-		// Trying to access Job model interface
+		// Trying to access Job model public interface
 		if(!Job.UpdateJobStatus(jobID, jobStatus)) {
 			return "Failed to update job status";
 		}
@@ -66,14 +66,17 @@ public class JobController {
 	}
 	
 	public static Vector<Job> GetAllJobData() {	
+		// Accessing Job model public interface
 		return Job.GetAllJobData();
 	}
 	
 	public static Job GetPcOnWorkingList(String PcID) {
+		// Accessing Job model public interface
 		return Job.GetPcOnWorkingList(PcID);
 	}
 	
 	public static Vector<Job> GetTechnicianJob(int UserID) {	
+		// Accessing Job model public interface
 		return Job.GetTechnicianJob(UserID);
 	}
 

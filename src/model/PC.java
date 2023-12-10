@@ -19,6 +19,12 @@ public class PC {
 		PC_Condition = pC_Condition;
 	}
 	
+	/*
+	 * Method to update pc condition data 
+	 * @params 	PcID, the id of selected pc
+	 * 			Condition, the new pc condition to change
+	 * @return true if the execution success, false if the execution failed
+	 * */
 	public static boolean UpdatePCCondition(String PcID, String Condition) {
 		String query = "UPDATE pc SET PC_Condition = ? WHERE PC_ID = ?";
 		
@@ -36,6 +42,11 @@ public class PC {
 		return true;
 	}
 	
+	/*
+	 * Method to delete pc data from database
+	 * @params 	PcID, the id of selected pc
+	 * @return true if the execution success, false if the execution failed
+	 * */
 	public static boolean DeletePC(String PcID) {
 		String query = "DELETE FROM pc WHERE PC_ID = ?";
 		
@@ -51,6 +62,11 @@ public class PC {
 		return true;
 	}
 
+	/*
+	 * Method to add new pc to the database
+	 * @params 	PcID, new PC id
+	 * @return true if the execution success, false if the execution failed
+	 * */
 	public static boolean AddNewPC(String PcID) {
 		String query = "INSERT INTO pc VALUES(?,'Usable')";
 		
@@ -65,6 +81,11 @@ public class PC {
 		return true;
 	}
 	
+	/*
+	 * Method to get PC data by id from database 
+	 * @params 	jobID, the id of selected pc
+	 * @return pc data
+	 * */
 	public static PC GetPCDetail(String PcID) {
 		String query = "SELECT * FROM pc WHERE PC_ID = ?";
 		
@@ -86,6 +107,10 @@ public class PC {
 		return null;
 	}
 	
+	/*
+	 * Method to get PC data from database 
+	 * @return pcList, the all PC data from the database
+	 * */
 	public static Vector<PC> GetAllPCData(){
 		Vector<PC> pcList = new Vector<PC>();
 		

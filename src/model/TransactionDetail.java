@@ -24,9 +24,17 @@ public class TransactionDetail {
 		BookedTime = bookedTime;
 	}
 	
+	/*
+	 * Method to get user specified transaction detail data from databases
+	 * @params	UserID, UserID from the authorized user
+	 * @returns trList, the transaction details data
+	 * */
 	public static Vector<TransactionDetail> GetUserTransactionDetail(int UserID){
 		Vector<TransactionDetail> trList = new Vector<TransactionDetail>();
 		
+		/* Query to get transaction details data by joining with user table
+		 * by UserName and CustomerName
+		 * */
 		String query = "SELECT td.* FROM transactiondetail td JOIN user u ON u.UserName = td.CustomerName WHERE u.UserID = ?";
 		
 		try {
@@ -51,6 +59,11 @@ public class TransactionDetail {
 		return trList;
 	}
 	
+	/*
+	 * Method to get all transaction detail data from databases
+	 * @params	TransactionID, transaction id of the TransactionDetails
+	 * @returns tdList, the transaction details data
+	 * */
 	public static Vector<TransactionDetail> GetAllTransactionDetail(int TransactionID){
 		Vector<TransactionDetail> tdList = new Vector<TransactionDetail>(); 
 		
@@ -77,6 +90,12 @@ public class TransactionDetail {
 		return tdList;
 	}
 	
+	/*
+	 * Method to insert new transaction details
+	 * @params	TransactionID, transaction id of the related transaction header
+	 * 			listPCBook, the finished book
+	 * @returns true if execution success, false if the execution failed
+	 * */
 	public static boolean AddTransactionDetail(int TransactionID, Vector<PCBook> listPCBook) {
 		String query = "INSERT INTO transactiondetail"
 				+ " VALUES(?,?,?,?)";
@@ -87,7 +106,23 @@ public class TransactionDetail {
 			for (PCBook pcBook : listPCBook) {				
 				ps.setInt(1, TransactionID);
 				ps.setString(2, pcBook.getPC_ID());
-				ps.setString(3, User.searchName(pcBook.getUserID()));
+				
+				// Search username by UserID
+				String user_query = "SELECT * FROM user WHERE UserID = ?";
+				String username = "";
+				try {			
+					PreparedStatement user_ps = db.prepareStatement(user_query);
+					ps.setInt(1, pcBook.getUserID());
+					
+					ResultSet rs = user_ps.executeQuery();
+					if(rs.next()) {
+						username = rs.getString("Username");
+					}
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
+				
+				ps.setString(3, username);
 				ps.setDate(4, pcBook.getBookedDate());
 				
 				ps.execute();

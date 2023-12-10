@@ -4,11 +4,17 @@ import java.sql.Date;
 
 import controller.PCBookController;
 import controller.PCController;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import view.Page;
 
 public class BookPC extends Page{	
@@ -16,6 +22,7 @@ public class BookPC extends Page{
 	private Label date_lbl, pc_lbl, error_lbl;
 	private DatePicker date_dp;
 	private TextField pc_tf;
+	private VBox vb;
 	
 	private GridPane gp;
 	
@@ -27,6 +34,7 @@ public class BookPC extends Page{
 	
 	@Override
 	protected void init() {
+		this.vb = new VBox();
 		this.date_lbl = new Label("Book Date");
 		this.pc_lbl = new Label("PC ID");
 		this.pc_tf = new TextField();
@@ -43,16 +51,33 @@ public class BookPC extends Page{
 		this.gp.add(date_dp, 1, 0);
 		this.gp.add(pc_lbl, 0, 1);
 		this.gp.add(pc_tf, 1, 1);
-		this.gp.add(submit_btn, 0, 2);
-		this.gp.add(error_lbl, 0, 3);
 		
-		mainFrame.setCenter(gp);
+		this.vb.getChildren().add(gp);
+		this.vb.getChildren().add(submit_btn);
+		this.vb.getChildren().add(error_lbl);
+		
+		mainFrame.setCenter(vb);
 	}
 
 	@Override
 	protected void setStyle() {
-		// TODO Auto-generated method stub
+		VBox.setMargin(submit_btn, new Insets(20));
 		
+		gp.setAlignment(Pos.CENTER);
+		vb.setAlignment(Pos.CENTER);
+		gp.setHgap(10);
+		gp.setVgap(20);
+		
+		
+		pc_lbl.setFont(Font.font(null,FontWeight.BOLD,16));
+		date_lbl.setFont(Font.font(null,FontWeight.BOLD,16));
+		pc_tf.setMinSize(200, 32);
+		pc_tf.setFont(Font.font(16));
+		date_dp.setMinSize(200, 32);
+		
+		submit_btn.setCursor(Cursor.HAND);
+		
+		error_lbl.setStyle("-fx-text-fill: red;" + "-fx-font-weight:bold;");
 	}
 
 	@Override

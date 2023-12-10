@@ -12,7 +12,7 @@ public class PCBookController {
 
 	public static String DeleteBookData(int BookID) {
 		
-		// Trying
+		// Accessing PCBook model public interface
 		if(!PCBook.DeleteBookData(BookID)) {
 			return "Failed to delete pc book data";
 		}
@@ -20,36 +20,34 @@ public class PCBookController {
 		return "Success";
 	}
 	
-	/*
-	 * Delegate request to the model layer to
-	 * get PCBook instance by PcID and date
-	 * */
 	public static PCBook GetPCBookedData(String PcID, Date date) {
+		// Accessing PCBook model public interface
 		return PCBook.GetPCBookedData(PcID, date);
 	}
 
-	
-	/*
-	 * 
-	 * */
 	public static String AssignUserToNewPC(int BookID, String NewPCID) {
 		
+		// Check if the NewPCID string is empty or only contains spaces
 		if(NewPCID.isBlank()) {
 			return "New PC ID cannot be blank";
 		}
 		
+		// Check if the PC selected is booked
 		if(GetPCBookedData(NewPCID, GetPCBookedDetail(BookID).getBookedDate()) != null) {
 			return "PC didn't available on selected date";
 		}
 		
+		// Check if the the PC_ID is not valid
 		if(PCController.GetPCDetail(NewPCID) == null) {
 			return "PC doesn't exist";
 		}
 		
+		// Check the status of the PC
 		if(!PCController.GetPCDetail(NewPCID).getPC_Condition().equals("Usable")) {
 			return "PC is under maintenance or broken";
 		}
 		
+		// Accessing PCBook model public interface
 		if(!PCBook.AssignUserToNewPC(BookID, NewPCID)) {
 			return "Failed to assign user";
 		}
@@ -57,28 +55,29 @@ public class PCBookController {
 		return "Success";
 	}
 	
-	
-	/*
-	 * Delegate request to the model layer to
-	 * get PCBook instance by BookID
-	 * */
+
 	public static PCBook GetPCBookedDetail(int BookID) {
+		// Accessing PCBook model public interface
 		return PCBook.GetPCBookedDetail(BookID);
 	}
 	
 	public static String AddNewBook(String PcID, int UserID, Date BookedDate) {
 		
 		PC pcToBook = PCController.GetPCDetail(PcID);
+		
+		// Check if the PC ID is not valid
 		if(pcToBook == null) {
 			return "PC with ID: "+ PcID +" doesn't exist";
 		}
 		
+		// Check if the PC is not usable
 		if(!pcToBook.getPC_Condition().equals("Usable")) {
 			return "This PC is not available for book";
 		}
 		
 		boolean isBooked = false;
 
+		// Validate if the pc is booked
 		Vector<PCBook> books = PCBookController.GetPCBookedByDate(BookedDate);
 		for (PCBook pcBook : books) {
 			if(pcBook.getPC_ID().equals(PcID)) {
@@ -91,6 +90,7 @@ public class PCBookController {
 			return "This PC have been booked for this date";
 		}
 		
+		// Accessing PCBook model public interface
 		if(!PCBook.AddNewBook(PcID, UserID, BookedDate)) {
 			return "Failed to add new book";
 		}
@@ -102,34 +102,31 @@ public class PCBookController {
 	
 		Vector<TransactionHeader> ths = TransactionController.GetAllTransactionHeaderData();
 		
+		// Accessing PCBook model public interface
 		if(!PCBook.FinishBook(PCBooks)) {
 			return "Failed to finish books";
 		}
 		
+		// variable definition for transaction parameter
 		int staffid = StageManager.getInstance().getUser().getUserID();
 		int headerID = 1;
 		if(ths != null) {
 			headerID = ths.get(ths.size()-1).getTransactionID() + 1;
 		} 
+		
+		// Generate new Transaction from the finished book
 		TransactionController.AddTransaction(headerID, PCBooks, staffid);
 		
 		return "Success";
 	}
 	
-	
-	/*
-	 * Delegate request to the model layer to 
-	 * get All data of PCBook in a Vector<PCBook> instance
-	 * */
 	public static Vector<PCBook> GetAllPCBookedData(){
+		// Accessing PCBook model public interface
 		return PCBook.GetAllPCBookedData();
 	}
 	
-	/*
-	 * Delegate request to the model layer to 
-	 * get All data of PCBook in a Vector<PCBook> instance by date
-	 * */
 	public static Vector<PCBook> GetPCBookedByDate(Date date){
+		// Accessing PCBook model public interface
 		return PCBook.GetPCBookedByDate(date);
 	}
 	

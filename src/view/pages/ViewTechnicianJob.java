@@ -83,8 +83,10 @@ public class ViewTechnicianJob extends Page {
 
 	@Override
 	protected void setStyle() {
-		// TODO Auto-generated method stub
-
+		idCol.prefWidthProperty().bind(pcs.widthProperty().multiply(0.25));
+        statusCol.prefWidthProperty().bind(pcs.widthProperty().multiply(0.25));
+        jidCol.prefWidthProperty().bind(pcs.widthProperty().multiply(0.25));
+        buttonCol.prefWidthProperty().bind(pcs.widthProperty().multiply(0.25));
 	}
 
 	@Override

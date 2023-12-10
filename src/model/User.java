@@ -25,6 +25,10 @@ public class User {
 		UserRole = userRole;
 	}
 	
+	/*
+	 * Method to get all user data from databases
+	 * @return userList, all user data exist in the database 
+	 * */
 	public static Vector<User> GetAllUserData(){
 		
 		Vector<User> userList = new Vector<User>();
@@ -32,6 +36,7 @@ public class User {
 		String Query = "SELECT * FROM user";
 		
 		try {
+			// Get result from query execution
 			ResultSet rs = db.executeQuery(Query);
 			while(rs.next()) {
 				int userID = rs.getInt("UserID");
@@ -49,13 +54,22 @@ public class User {
 		return userList;
 	}
 	
+	/*
+	 * Method to get user data from databases
+	 * @params 	Username, the username inputted by user
+	 * 			Password, the password inputted by user
+	 * @return User if there is user exist in the database 
+	 * 			or null if there is no valid user exist in the database
+	 * */
 	public static User GetUserData(String Username, String Password) {
 		
-		String query = "SELECT * FROM user WHERE Username = ?";
+		String query = "SELECT * FROM user WHERE Username = ? and UserPassword = ?";
 		
-		try {			
+		try {
+			// Get result from parameterized query execution			
 			PreparedStatement ps = db.prepareStatement(query);
 			ps.setString(1, Username);
+			ps.setString(2, Password);
 			ResultSet rs = ps.executeQuery();
 			
 			if(rs.next()) {
@@ -75,6 +89,13 @@ public class User {
 		return null;
 	}
 	
+	/*
+	 * Method to get user data from databases
+	 * @params 	Username, the username inputted by user
+	 * 			Password, the password inputted by user
+	 * 			Age, the user age inputted by user
+	 * @return true if execution success, false if execution failed
+	 * */
 	public static boolean AddNewUser(String Username, String Password, Integer Age) {
 		
 		String query = "INSERT INTO user (UserName,UserPassword,UserAge,UserRole)"
@@ -95,6 +116,13 @@ public class User {
 		return true;
 	}
 	
+	
+	/*
+	 * Method to change UserRole data from databases
+	 * @params 	UserID, the id of the user to change role
+	 * 			NewRole, the new user role between(Customer, Admin, Computer Technician, Operator)
+	 * @return techList, all technician data
+	 * */
 	public static boolean ChangeUserRole(int UserID, String NewRole) {
 		
 		String query = "UPDATE user SET UserRole= ? WHERE UserID = ?";
@@ -112,7 +140,11 @@ public class User {
 		return true;
 	}
 	
-	
+	/*
+	 * Method to get all technician data from databases
+	 * (Technician = User with UserRole Computer Technician)
+	 * @return techList, all technician data
+	 * */
 	public static Vector<User> GetAllTechnician(){
 		String query = "SELECT * FROM user WHERE UserRole = 'Computer Technician'";
 		
@@ -137,28 +169,6 @@ public class User {
 		
 		return techList;
 	}
-
-	
-	// Method do search username by UserID
-	// Used for better search while adding  Transaction Detail
-	public static String searchName(int userID) {
-		String query = "SELECT * FROM user WHERE UserID = ?";
-		
-		try {			
-			PreparedStatement ps = db.prepareStatement(query);
-			ps.setInt(1, userID);
-			
-			ResultSet rs = ps.executeQuery();
-			while(rs.next()) {
-				return rs.getString("Username");
-			}
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
-		
-		return "";
-	}
-	
 	
 	// Getter & Setter 
 	public int getUserID() {

@@ -57,8 +57,10 @@ public class ViewAllReport extends Page {
 
 	@Override
 	protected void setStyle() {
-		// TODO Auto-generated method stub
-
+		idCol.prefWidthProperty().bind(reports.widthProperty().multiply(0.25));
+        noteCol.prefWidthProperty().bind(reports.widthProperty().multiply(0.25));
+        pcCol.prefWidthProperty().bind(reports.widthProperty().multiply(0.25));
+        dateCol.prefWidthProperty().bind(reports.widthProperty().multiply(0.25));
 	}
 
 	@Override
