@@ -142,6 +142,9 @@ public class ViewPCBooked extends Page {
 		 * */
 		pcs.setOnMouseClicked(e->{
 			int index = pcs.getSelectionModel().getSelectedIndex();
+			if(index < 0) {
+				return;
+			}
 			update_lbl.setText("Assign User to new PC, Selected Book Id: " + pcs.getItems().get(index).getBookID());
 		});
 		

@@ -110,7 +110,7 @@ public class PCBookController {
 		// variable definition for transaction parameter
 		int staffid = StageManager.getInstance().getUser().getUserID();
 		int headerID = 1;
-		if(ths != null) {
+		if(ths.size() > 0) {
 			headerID = ths.get(ths.size()-1).getTransactionID() + 1;
 		} 
 		

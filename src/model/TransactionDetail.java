@@ -116,7 +116,7 @@ public class TransactionDetail {
 					
 					ResultSet rs = user_ps.executeQuery();
 					if(rs.next()) {
-						username = rs.getString("Username");
+						username = rs.getString("UserName");
 					}
 				} catch (Exception e) {
 					// TODO: handle exception

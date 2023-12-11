@@ -51,7 +51,10 @@ public class ViewCsTransactionHistory extends Page{
 
 	@Override
 	protected void setStyle() {
-		// TODO Auto-generated method stub
+		idCol.prefWidthProperty().bind(details.widthProperty().multiply(0.25));
+        pcCol.prefWidthProperty().bind(details.widthProperty().multiply(0.25));
+        nameCol.prefWidthProperty().bind(details.widthProperty().multiply(0.25));
+        dateCol.prefWidthProperty().bind(details.widthProperty().multiply(0.25));
 
 	}
 
