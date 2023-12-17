@@ -1,6 +1,7 @@
 package controller;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.Vector;
 
 import model.PC;
@@ -73,6 +74,10 @@ public class PCBookController {
 		// Check if the PC is not usable
 		if(!pcToBook.getPC_Condition().equals("Usable")) {
 			return "This PC is not available for book";
+		}
+		
+		if(BookedDate.before(Date.valueOf(LocalDate.now()))) {
+			return "The scheduled booking has passed";
 		}
 		
 		boolean isBooked = false;
