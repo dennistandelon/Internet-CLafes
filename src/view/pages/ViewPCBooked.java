@@ -164,6 +164,9 @@ public class ViewPCBooked extends Page {
 		finish_btn.setOnAction(e->{
 			Date date = Date.valueOf(this.finish_dp.getValue());
 			Vector<PCBook> PCBooks = PCBookController.GetPCBookedByDate(date);
+			if(PCBooks == null || PCBooks.size() == 0) {
+				return;
+			}
 			PCBookController.FinishBook(PCBooks);
 			
 			refreshTable();
@@ -171,7 +174,11 @@ public class ViewPCBooked extends Page {
 		
 		cancel_btn.setOnAction(e->{
 			Date date = Date.valueOf(this.cancel_dp.getValue());
-			for (PCBook p : PCBookController.GetPCBookedByDate(date)) {
+			Vector<PCBook> PCBooks = PCBookController.GetPCBookedByDate(date);
+			if(PCBooks == null || PCBooks.size() == 0) {
+				return;
+			}
+			for (PCBook p : PCBooks) {
 				PCBookController.DeleteBookData(p.getBookID());
 			}
 			refreshTable();

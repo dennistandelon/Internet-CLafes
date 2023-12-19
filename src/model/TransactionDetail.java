@@ -112,7 +112,7 @@ public class TransactionDetail {
 				String username = "";
 				try {			
 					PreparedStatement user_ps = db.prepareStatement(user_query);
-					ps.setInt(1, pcBook.getUserID());
+					user_ps.setInt(1, pcBook.getUserID());
 					
 					ResultSet rs = user_ps.executeQuery();
 					if(rs.next()) {
